@@ -3,6 +3,12 @@ My experiments on using OpenCL on the Google Coral Deb board
 
 ### Prerequisites
 
+ - Linux computer (referred to below as "host")
+ - USB-A to USB-micro-B cable (to connect your PC to the board's serial port)
+ - USB-A to USB-C cable (to connect your PC to the board's data port)
+ - 2-3A (5V) USB Type-C power supply
+ - Ethernet cable or Wi-Fi connection
+
 ### Coral Setup
 
 #### Connect thru USB OTG
@@ -82,15 +88,15 @@ Default login/password: mendel
          valid_lft forever preferred_lft forever
  ````
  
-  - then  `ip route show`
+ - then  `ip route show`
   
-  ````
-  default via 192.168.1.1 dev wlan0 proto dhcp metric 600
-  10.0.0.0/24 dev eth0 proto kernel scope link src 10.0.0.4
-  192.168.1.0/24 dev wlan0 proto kernel scope link src 192.168.1.43 metric 600
-  192.168.100.0/24 dev usb0 proto kernel scope link src 192.168.100.2 metric 100
-  192.168.101.0/24 dev usb1 proto kernel scope link src 192.168.101.2 metric 101 linkdown
-  ````
+ ````
+ default via 192.168.1.1 dev wlan0 proto dhcp metric 600
+ 10.0.0.0/24 dev eth0 proto kernel scope link src 10.0.0.4
+ 192.168.1.0/24 dev wlan0 proto kernel scope link src 192.168.1.43 metric 600
+ 192.168.100.0/24 dev usb0 proto kernel scope link src 192.168.100.2 metric 100
+ 192.168.101.0/24 dev usb1 proto kernel scope link src 192.168.101.2 metric 101 linkdown
+ ````
 
 #### Install TPU libraries
 
@@ -98,7 +104,16 @@ Default login/password: mendel
 sudo apt-get update
 sudo apt-get dist-upgrade
 pip3 install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp37-cp37m-linux_aarch64.whl
-edgetpu_demo --stream
+````
+
+##### Demo Streaming
+
+`edgetpu_demo --stream`
+
+##### Demo classification
+
+Try:
+````
 sudo apt-get install git
 mkdir coral && cd coral
 git clone https://github.com/google-coral/tflite.git
@@ -110,7 +125,8 @@ python3 classify_image.py --model models/mobilenet_v2_1.0_224_inat_bird_quant_ed
 ### Setup OpenCL
 
 ````
-sudo apt-get install clinfo opencl-c-headers opencl-clhpp-headers opencl-headers opencl-headers ocl-icd-libopencl1 ocl-icd-dev ocl-icd-opencl-dev
+sudo apt-get install clinfo opencl-c-headers opencl-clhpp-headers opencl-headers opencl-headers 
+sudo apt-get install ocl-icd-libopencl1 ocl-icd-dev ocl-icd-opencl-dev
 clinfo
 ```` 
 
@@ -120,10 +136,9 @@ pip3 install rpyc numpy==1.19.0
 pip3 install pyopencl
 ````
 
-
 ### OpenCL performance
 
-Reminder, the openCL Coral implementatinon is for the Vivante GC7000Lite GPU, **NOT FOR THE TPU**.
+Reminder, the openCL Coral implementation is for the Vivante GC7000Lite GPU, **NOT FOR THE TPU**.
 
 clpeak:
 ````
