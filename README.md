@@ -5,6 +5,17 @@ My experiments on using OpenCL on the Google Coral Deb board
 
 ### Coral Setup
 
+#### Set SSH keys
+
+I did not find a way to revert Mendel sshd configuration to accept user/passwords and not only public keys certificates.
+
+So, when `mdt shell` worked and you still connected using the USB Data Port, from your **host**, type
+
+ ````
+ ssh-keygen
+ mdt pushkey ~/.ssh/id_rsa.pub
+ ssh mendel@192.168.100.2
+ ````
 
 #### Static IP on the OpenCL private network
 
@@ -44,3 +55,108 @@ My experiments on using OpenCL on the Google Coral Deb board
   192.168.100.0/24 dev usb0 proto kernel scope link src 192.168.100.2 metric 100
   192.168.101.0/24 dev usb1 proto kernel scope link src 192.168.101.2 metric 101 linkdown
   ````
+
+### OpenCL performance
+
+Reminder, the openCL Coral implementatinon is for the Vivandi G7000Lite GPU, NOT FOR THE TPU.
+
+clpeak:
+````
+Platform: OpenCL for the Raspberry Pi VideoCore IV GPU
+  Device: VideoCore IV GPU
+    Driver version  : 0.4.9999 (Linux ARM)
+    Compute units   : 1
+    Clock frequency : 300 MHz
+
+    Global memory bandwidth (GBPS)
+clCreateBuffer (-5)
+      Tests skipped
+
+    Single-precision compute (GFLOPS)
+      float   : 0.60
+      float2  : 1.13
+      float4  : 2.00
+      float8  : 3.31
+      float16 : 4.60
+
+    No half precision support! Skipped
+
+    No double precision support! Skipped
+
+    Integer compute (GIOPS)
+      int   : 0.16
+      int2  : 0.30
+      int4  : 0.60
+      int8  : 0.77
+      int16 : 1.25
+
+    Integer compute Fast 24bit (GIOPS)
+      int   : 0.57
+      int2  : 1.02
+      int4  : 1.73
+      int8  : 2.51
+      int16 : 3.27
+
+    Transfer bandwidth (GBPS)
+      enqueueWriteBuffer              : 1.22
+      enqueueReadBuffer               : 0.25
+      enqueueWriteBuffer non-blocking : 1.22
+      enqueueReadBuffer non-blocking  : 0.25
+      enqueueMapBuffer(for read)      : 1838.60
+        memcpy from mapped ptr        : 0.24
+      enqueueUnmap(after write)       : 2191.31
+        memcpy to mapped ptr          : 1.22
+
+    Kernel launch latency : 30.27 us
+````
+
+To compare with the Raspberry Pi 3 Videocore IV performance:
+
+````
+Platform: OpenCL for the Raspberry Pi VideoCore IV GPU
+  Device: VideoCore IV GPU
+    Driver version  : 0.4.9999 (Linux ARM)
+    Compute units   : 1
+    Clock frequency : 300 MHz
+
+    Global memory bandwidth (GBPS)
+clCreateBuffer (-5)
+      Tests skipped
+
+    Single-precision compute (GFLOPS)
+      float   : 0.60
+      float2  : 1.13
+      float4  : 2.00
+      float8  : 3.31
+      float16 : 4.60
+
+    No half precision support! Skipped
+
+    No double precision support! Skipped
+
+    Integer compute (GIOPS)
+      int   : 0.16
+      int2  : 0.30
+      int4  : 0.60
+      int8  : 0.77
+      int16 : 1.25
+
+    Integer compute Fast 24bit (GIOPS)
+      int   : 0.57
+      int2  : 1.02
+      int4  : 1.73
+      int8  : 2.51
+      int16 : 3.27
+
+    Transfer bandwidth (GBPS)
+      enqueueWriteBuffer              : 1.22
+      enqueueReadBuffer               : 0.25
+      enqueueWriteBuffer non-blocking : 1.22
+      enqueueReadBuffer non-blocking  : 0.25
+      enqueueMapBuffer(for read)      : 1838.60
+        memcpy from mapped ptr        : 0.24
+      enqueueUnmap(after write)       : 2191.31
+        memcpy to mapped ptr          : 1.22
+
+    Kernel launch latency : 30.27 us
+````
