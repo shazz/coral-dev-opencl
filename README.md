@@ -115,15 +115,15 @@ clinfo
 ```` 
 
 ````
-sudo apt-get install python3-dev
-pip3 install rpyc numpy
+sudo apt-get install python3-dev libatlas-base-dev
+pip3 install rpyc numpy==1.19.0
 pip3 install pyopencl
 ````
 
 
 ### OpenCL performance
 
-Reminder, the openCL Coral implementatinon is for the Vivandi G7000Lite GPU, NOT FOR THE TPU.
+Reminder, the openCL Coral implementatinon is for the Vivante GC7000Lite GPU, **NOT FOR THE TPU**.
 
 clpeak:
 ````
