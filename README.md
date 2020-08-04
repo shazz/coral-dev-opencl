@@ -5,6 +5,19 @@ My experiments on using OpenCL on the Google Coral Deb board
 
 ### Coral Setup
 
+
+#### SD Card as a drive
+
+````
+sudo mkdir /mnt/SD
+sudo fdisk -l
+sudo mkfs -t ext2 /dev/mmcblk1
+sudo mount -t ext2 /dev/mmcblk1 /mnt/SD
+sudo nano /etc/fstab
+````
+
+Add: `/dev/mmcblk1 /mnt/SD ext2 defaults 0 3`
+
 #### Set SSH keys
 
 I did not find a way to revert Mendel sshd configuration to accept user/passwords and not only public keys certificates.
