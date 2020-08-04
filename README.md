@@ -62,52 +62,60 @@ Reminder, the openCL Coral implementatinon is for the Vivandi G7000Lite GPU, NOT
 
 clpeak:
 ````
-Platform: OpenCL for the Raspberry Pi VideoCore IV GPU
-  Device: VideoCore IV GPU
-    Driver version  : 0.4.9999 (Linux ARM)
+Platform: Vivante OpenCL Platform
+  Device: Vivante OpenCL Device GC7000L.6214.0000
+    Driver version  : OpenCL 1.2 V6.4.2.256507 (Linux ARM64)
     Compute units   : 1
-    Clock frequency : 300 MHz
+    Clock frequency : 800 MHz
 
     Global memory bandwidth (GBPS)
-clCreateBuffer (-5)
-      Tests skipped
+      float   : 3.38
+      float2  : 4.88
+      float4  : 4.98
+      float8  : 4.71
+      float16 : 3.57
 
     Single-precision compute (GFLOPS)
-      float   : 0.60
-      float2  : 1.13
-      float4  : 2.00
-      float8  : 3.31
-      float16 : 4.60
+      float   : 4.65
+      float2  : 10.18
+      float4  : 21.27
+      float8  : 22.21
+      float16 : 24.86
 
-    No half precision support! Skipped
+    Half-precision compute (GFLOPS)
+      half   : 4.65
+      half2  : 10.18
+      half4  : 21.27
+      half8  : 22.20
+      half16 : 24.85
 
     No double precision support! Skipped
 
     Integer compute (GIOPS)
-      int   : 0.16
-      int2  : 0.30
-      int4  : 0.60
-      int8  : 0.77
-      int16 : 1.25
+      int   : 5.67
+      int2  : 5.99
+      int4  : 6.37
+      int8  : 6.34
+      int16 : 6.32
 
     Integer compute Fast 24bit (GIOPS)
-      int   : 0.57
-      int2  : 1.02
-      int4  : 1.73
-      int8  : 2.51
-      int16 : 3.27
+      int   : 5.67
+      int2  : 5.99
+      int4  : 6.37
+      int8  : 6.34
+      int16 : 6.32
 
     Transfer bandwidth (GBPS)
-      enqueueWriteBuffer              : 1.22
-      enqueueReadBuffer               : 0.25
-      enqueueWriteBuffer non-blocking : 1.22
-      enqueueReadBuffer non-blocking  : 0.25
-      enqueueMapBuffer(for read)      : 1838.60
-        memcpy from mapped ptr        : 0.24
-      enqueueUnmap(after write)       : 2191.31
-        memcpy to mapped ptr          : 1.22
+      enqueueWriteBuffer              : 1.97
+      enqueueReadBuffer               : 0.11
+      enqueueWriteBuffer non-blocking : 2.05
+      enqueueReadBuffer non-blocking  : 0.12
+      enqueueMapBuffer(for read)      : 99.55
+        memcpy from mapped ptr        : 0.12
+      enqueueUnmap(after write)       : 103.91
+        memcpy to mapped ptr          : 2.03
 
-    Kernel launch latency : 30.27 us
+    Kernel launch latency : 206.17 us
 ````
 
 To compare with the Raspberry Pi 3 Videocore IV performance:
