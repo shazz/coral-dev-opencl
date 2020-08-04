@@ -3,7 +3,7 @@ My experiments on using OpenCL on the Google Coral Deb board
 
 ### Prerequisites
 
- - Linux computer (referred to below as "host")
+ - Linux computer (referred to below as "host") with python3 and pip3
  - USB-A to USB-micro-B cable (to connect your PC to the board's serial port)
  - USB-A to USB-C cable (to connect your PC to the board's data port)
  - 2-3A (5V) USB Type-C power supply
@@ -11,11 +11,49 @@ My experiments on using OpenCL on the Google Coral Deb board
 
 ### Coral Setup
 
+#### Prepare the host:
+
+ - Install a serial terminal
+ ````
+ sudo apt-get install screen
+ ````
+ 
+ - Get `fastboot` from the Android tools from `https://developer.android.com/studio/releases/platform-tools#downloads
+ ````
+ mkdir -p ~/.local/bin
+ sudo mv ~/Downloads/platform-tools/fastboot ~/.local/bin/
+ ````
+ 
+ - Get MDT (Mendel Dev Tools)
+ ````
+ pip3 install --user mendel-development-tool
+ ````
+ 
+ - Sometimes needed for the serial console (not on my rpi)
+````
+sudo sh -c "echo 'SUBSYSTEM==\"usb\", ATTR{idVendor}==\"0525\", MODE=\"0664\", \
+GROUP=\"plugdev\", TAG+=\"uaccess\"' >> /etc/udev/rules.d/65-edgetpu-board.rules"
+
+sudo udevadm control --reload-rules && sudo udevadm trigger
+````
+
 #### Connect thru USB OTG
 
 ````
 mdt devices
 mdt shell
+````
+
+#### Download and install Mendel distribution
+````
+cd ~/Downloads
+
+curl -O https://mendel-linux.org/images/enterprise/eagle/enterprise-eagle-20200724205123.zip
+
+unzip enterprise-eagle-20200724205123.zip \
+&& cd enterprise-eagle-20200724205123
+
+bash flash.sh
 ````
 
 #### Setup Wifi connection
@@ -56,7 +94,7 @@ From the host
 sudo apt-get install screen
 pip3 install --user mendel-development-tool
 
-dmesg
+dmesg | grep ttyUSB
 screen /dev/ttyUSB0 115200
 ````
 
