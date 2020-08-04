@@ -5,8 +5,21 @@ My experiments on using OpenCL on the Google Coral Deb board
 
 ### Coral Setup
 
+#### Connect thru USB OTG
 
-#### SD Card as a drive
+````
+mdt devices
+mdt shell
+````
+
+#### Setup Wifi connection
+
+````
+nmtui
+nmcli connection show
+````
+
+#### Set SD Card as a drive
 
 ````
 sudo mkdir /mnt/SD
@@ -30,13 +43,7 @@ So, when `mdt shell` worked and you still connected using the USB Data Port, fro
  ssh mendel@192.168.100.2
  ````
 
-#### Setup Wifi connection
-
-````
-nmcli connection show
-````
-
-#### Connect thru Serial Shell
+#### Connect thru Serial Shell if needed
 
 From the host
 ````
@@ -61,9 +68,6 @@ Default login/password: mendel
   iface eth0 inet static
           address 10.0.0.4
           netmask 255.255.255.0
-          #network 10.0.0.1
-          #broadcast 10.0.0.255
-          #gateway 10.0.0.1
   ````
 
  - Restart the network service: `sudo systemctl restart networking`
