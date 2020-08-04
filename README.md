@@ -30,6 +30,25 @@ So, when `mdt shell` worked and you still connected using the USB Data Port, fro
  ssh mendel@192.168.100.2
  ````
 
+#### Setup Wifi connection
+
+````
+nmcli connection show
+````
+
+#### Connect thru Serial Shell
+
+From the host
+````
+sudo apt-get install screen
+pip3 install --user mendel-development-tool
+
+dmesg
+screen /dev/ttyUSB0 115200
+````
+
+Default login/password: mendel
+
 #### Static IP on the OpenCL private network
 
  - Edit as sudoer `/etc/network/interfaces` and modify:
@@ -68,6 +87,35 @@ So, when `mdt shell` worked and you still connected using the USB Data Port, fro
   192.168.100.0/24 dev usb0 proto kernel scope link src 192.168.100.2 metric 100
   192.168.101.0/24 dev usb1 proto kernel scope link src 192.168.101.2 metric 101 linkdown
   ````
+
+#### Install TPU libraries
+
+````
+sudo apt-get update
+sudo apt-get dist-upgrade
+pip3 install https://dl.google.com/coral/python/tflite_runtime-2.1.0.post1-cp37-cp37m-linux_aarch64.whl
+edgetpu_demo --stream
+sudo apt-get install git
+mkdir coral && cd coral
+git clone https://github.com/google-coral/tflite.git
+cd tflite/python/examples/classification
+bash install_requirements.sh
+python3 classify_image.py --model models/mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite --labels models/inat_bird_labels.txt --input images/parrot.jpg
+````
+
+### Setup OpenCL
+
+````
+sudo apt-get install clinfo opencl-c-headers opencl-clhpp-headers opencl-headers opencl-headers ocl-icd-libopencl1 ocl-icd-dev ocl-icd-opencl-dev
+clinfo
+```` 
+
+````
+sudo apt-get install python3-dev
+pip3 install rpyc numpy
+pip3 install pyopencl
+````
+
 
 ### OpenCL performance
 
