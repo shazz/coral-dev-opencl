@@ -30,19 +30,19 @@ My experiments on using OpenCL on the Google Coral Deb board
  ````
  
  - Sometimes needed for the serial console (not on my rpi)
-````
-sudo sh -c "echo 'SUBSYSTEM==\"usb\", ATTR{idVendor}==\"0525\", MODE=\"0664\", \
-GROUP=\"plugdev\", TAG+=\"uaccess\"' >> /etc/udev/rules.d/65-edgetpu-board.rules"
+ ````
+ sudo sh -c "echo 'SUBSYSTEM==\"usb\", ATTR{idVendor}==\"0525\", MODE=\"0664\", \
+ GROUP=\"plugdev\", TAG+=\"uaccess\"' >> /etc/udev/rules.d/65-edgetpu-board.rules"
 
-sudo udevadm control --reload-rules && sudo udevadm trigger
-````
+ sudo udevadm control --reload-rules && sudo udevadm trigger
+ ````
 
 #### Connect thru USB OTG
 
-````
-mdt devices
-mdt shell
-````
+ ````
+ mdt devices
+ mdt shell
+ ````
 
 #### Download and install Mendel distribution
 ````
@@ -190,42 +190,45 @@ clinfo
 
 - Patch the opencl headers (not the best way but I did not find another) by adding at the beginning:
 
-````
-sudo nano /usr/include/CL/cl_version.h
-````
+  ````
+  sudo nano /usr/include/CL/cl_version.h
+  ````
 
-````
-/* patch! */
-#define CL_TARGET_OPENCL_VERSION 120
-````
+  ````
+  /* patch! */
+  #define CL_TARGET_OPENCL_VERSION 120
+  ````
 
 - Set the SD card swap! 
 
-````
-sudo dphys-swapfile swapon
-````
+  ````
+  sudo dphys-swapfile swapon
+  ````
 
 - Install the libraries
 
-````
-sudo apt-get install python3-dev libatlas-base-dev
-pip3 install rpyc numpy==1.19.0 mako pybind11
-pip3 install pyopencl
-sudo dphys-swapfile swapoff
-````
+  ````
+  sudo apt-get install python3-dev libatlas-base-dev
+  pip3 install rpyc numpy==1.19.0 mako pybind11
+  pip3 install pyopencl
+  sudo dphys-swapfile swapoff
+  ````
 
 - If doesnt work:
-````
-git clone https://github.com/inducer/pyopencl.git
-cd pyopencl
-python configure.py
-make
-sudo make install
-````
+
+  ````
+  git clone https://github.com/inducer/pyopencl.git
+  cd pyopencl
+  python configure.py
+  make
+  sudo make install
+  ````
 
 ### OpenCL performance
 
 Reminder, the openCL Coral implementation is for the Vivante GC7000Lite GPU, **NOT FOR THE TPU**.
+Notes:
+- GC7000Lite local memory is only 32KB, so a scratchpad
 
 clpeak:
 ````
