@@ -65,15 +65,36 @@ nmcli connection show
 
 #### Set SD Card as a drive
 
-````
-sudo mkdir /mnt/SD
-sudo fdisk -l
-sudo mkfs -t ext2 /dev/mmcblk1
-sudo mount -t ext2 /dev/mmcblk1 /mnt/SD
-sudo nano /etc/fstab
-````
+ - To create a file swap REQUIRED to compile pyopencl
+ 
+  ````
+  sudo umount /dev/mmcblk1
+  sudo mkdir /mnt/SD
+  sudo mkfs -t ext4 /dev/mmcblk1
+  sudo mount -t ext4 /dev/mmcblk1 /mnt/SD 
+  
+  sudo apt-get install exuberant-ctags
+  sudo apt-get install dphys-swapfile
+  
+  sudo dphys-swapfile setup
+  sudo dphys-swapfile swapon
+  sudo chmod 0600 /mnt/SD/swap
+  sudo dphys-swapfile swapon
+  watch -n1 free
+  ````
 
-Add: `/dev/mmcblk1 /mnt/SD ext2 defaults 0 3`
+- To create a storage drive (non-journalized)
+
+  ````
+  sudo umount /dev/mmcblk1
+  sudo mkdir /mnt/SD
+  sudo fdisk -l
+  sudo mkfs -t ext2 /dev/mmcblk1
+  sudo mount -t ext2 /dev/mmcblk1 /mnt/SD
+  sudo nano /etc/fstab
+  ````
+
+ - Add: `/dev/mmcblk1 /mnt/SD ext2 defaults 0 3`
 
 #### Set SSH keys
 
@@ -170,7 +191,7 @@ clinfo
 
 ````
 sudo apt-get install python3-dev libatlas-base-dev
-pip3 install rpyc numpy==1.19.0
+pip3 install rpyc numpy==1.19.0 mako pybind11
 pip3 install pyopencl
 ````
 
