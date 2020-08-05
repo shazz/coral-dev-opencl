@@ -183,19 +183,44 @@ python3 classify_image.py --model models/mobilenet_v2_1.0_224_inat_bird_quant_ed
 ### Setup OpenCL
 
 ````
-sudo apt-get install clinfo opencl-c-headers opencl-clhpp-headers opencl-headers opencl-headers 
+sudo apt-get install clinfo opencl-c-headers opencl-clhpp-headers opencl-headers
 sudo apt-get install ocl-icd-libopencl1 ocl-icd-dev ocl-icd-opencl-dev
 clinfo
 ```` 
 
-Set the SD card swap! 
+- Patch the opencl headers (not the best way but I did not find another) by adding at the beginning:
+
+````
+sudo nano /usr/include/CL/cl_version.h
+````
+
+````
+/* patch! */
+#define CL_TARGET_OPENCL_VERSION 120
+````
+
+- Set the SD card swap! 
 
 ````
 sudo dphys-swapfile swapon
+````
+
+- Install the libraries
+
+````
 sudo apt-get install python3-dev libatlas-base-dev
 pip3 install rpyc numpy==1.19.0 mako pybind11
 pip3 install pyopencl
 sudo dphys-swapfile swapoff
+````
+
+- If doesnt work:
+````
+git clone https://github.com/inducer/pyopencl.git
+cd pyopencl
+python configure.py
+make
+sudo make install
 ````
 
 ### OpenCL performance
