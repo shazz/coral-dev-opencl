@@ -77,7 +77,6 @@ nmcli connection show
   sudo apt-get install dphys-swapfile
   
   sudo dphys-swapfile setup
-  sudo dphys-swapfile swapon
   sudo chmod 0600 /mnt/SD/swap
   sudo dphys-swapfile swapon
   watch -n1 free
@@ -189,10 +188,14 @@ sudo apt-get install ocl-icd-libopencl1 ocl-icd-dev ocl-icd-opencl-dev
 clinfo
 ```` 
 
+Set the SD card swap! 
+
 ````
+sudo dphys-swapfile swapon
 sudo apt-get install python3-dev libatlas-base-dev
 pip3 install rpyc numpy==1.19.0 mako pybind11
 pip3 install pyopencl
+sudo dphys-swapfile swapoff
 ````
 
 ### OpenCL performance
