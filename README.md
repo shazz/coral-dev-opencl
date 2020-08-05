@@ -22,7 +22,7 @@ My experiments on using OpenCL on the Google Coral Deb board
    ````
    mkdir -p ~/.local/bin
    sudo mv ~/Downloads/platform-tools/fastboot ~/.local/bin/
- ````
+   ````
  
  - Get MDT (Mendel Dev Tools)
    ````
