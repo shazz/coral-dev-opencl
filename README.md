@@ -1,5 +1,6 @@
 # coral-dev-opencl
-My experiments on using OpenCL on the Google Coral Deb board
+
+My experiments on using OpenCL on the Google Coral Dev board GPU associated to ML models on the TPU
 
 ### Prerequisites
 
@@ -166,20 +167,32 @@ Default login/password: mendel
 
 ##### Demo classification
 
-  Try:
-  ````
-  sudo apt-get install git
-  mkdir coral && cd coral
-  git clone https://github.com/google-coral/tflite.git
-  cd tflite/python/examples/classification
-  bash install_requirements.sh
-  python3 classify_image.py --model models/mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite --labels models/inat_bird_labels.txt --input images/parrot.jpg
-  ````
+ - Try tflite demo:
+    ````
+    sudo apt-get install git
+    mkdir coral && cd coral
+    git clone https://github.com/google-coral/tflite.git
+    cd tflite/python/examples/classification
+    bash install_requirements.sh
+    python3 classify_image.py --model models/mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite --labels models/inat_bird_labels.txt --input images/parrot.jpg
+    ````
+
+ - Try EdgeTPU Python API:
+
+   ````
+   sudo apt-get install edgetpu-examples
+   cd /usr/share/edgetpu/examples/
+
+   python3 classify_image.py --model models/mobilenet_v2_1.0_224_inat_bird_quant_edgetpu.tflite --label models/inat_bird_labels.txt --image images/parrot.jpg
+   python3 object_detection.py --model models/ssd_mobilenet_v2_coco_quant_postprocess_edgetpu.tflite --label models/coco_labels.txt --input images/grace_hopper.bmp --output ${HOME}/object_detection_results.jpg
+   python3 object_detection.py --model models/mobilenet_ssd_v2_face_quant_postprocess_edgetpu.tflite --input images/grace_hopper.bmp --output ${HOME}/face_detection_results.jpg
+   python3 examples/semantic_segmentation.py --model models/deeplabv3_mnv2_pascal_quant_edgetpu.tflite --input models/bird.bmp --keep_aspect_ratio --output ${HOME}/segmentation_result.jpg
+   ````
 
 ### Setup OpenCL
 
   ````
-  sudo apt-get install clinfo opencl-c-headers opencl-clhpp-headers opencl-headers
+  sudo apt-get install clinfo opencl-c-headers opencl-clhpp-headers
   sudo apt-get install ocl-icd-libopencl1 ocl-icd-dev ocl-icd-opencl-dev
   clinfo
 ```` 
@@ -211,12 +224,34 @@ Default login/password: mendel
   ````
   git clone https://github.com/inducer/pyopencl.git
   cd pyopencl
-  python configure.py
+  python configure.py --cl-pretend-version=1.2
   make
-  sudo make install
+  #sudo make install
+  rm -Rf build
+  pip3 install .
   ````
 
-### OpenCL performance
+### Cluster performance
+
+#### Network
+
+Check the bandwidth between each node:
+
+ - Create a iperf server on one node, `opencl1` for example
+  ```
+  sudo apt-get install iperf
+  iperf -s
+  ```
+
+ - Create an iperf client on each other node:
+  ```
+  sudo apt-get install iperf
+  iperf -c opencl1
+  ```
+
+On my cluster, as expected I got arounf 94.4Mb/s to a raspberry pi 3B and 932Mb/s to the Coral Dev board (from a laptop of course)
+
+#### OpenCL
 
 Reminder, the openCL Coral implementation is for the Vivante GC7000Lite GPU, **NOT FOR THE TPU**.
 Notes:
